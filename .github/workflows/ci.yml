@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches:
+    - action
+    tags:
+    - '*'
+
+jobs:
+  build_and_release:
+    name: ptyspawn
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: >
+          sudo bash -c 'apt update && apt install make musl musl-dev musl-tools -y';
+          make;
+
+      - name: Build archlinux package
+        uses: countstarlight/arch-makepkg-action@master
+        with:
+          scripts: makepkg
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            ptyspawn
+            ptyspawn*.pkg.tar.zst
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
