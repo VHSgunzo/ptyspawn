@@ -1,5 +1,5 @@
 PROG = ptyspawn
-OBJS = main.o loop.o driver.o error.o ptyfork.o ttymodes.o ptyopen.o signalintr.o spipe.o writen.o
+OBJS = main.o error.o
 CFLAGS = -g -Wall -static -s -Os -pipe
 CC = $(shell which musl-gcc 2>/dev/null||echo cc)
 
