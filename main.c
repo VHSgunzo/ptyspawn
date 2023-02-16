@@ -27,7 +27,7 @@ void setup_raw(struct termios *save) {
   }
   set = *save;
   cfmakeraw(&set);
-  if (tcsetattr(0, TCSANOW, &set) < 0)
+  if (tcsetattr(STDIN_FILENO, TCSANOW, &set) < 0)
       err_sys("Unable to set terminal attributes: %m");
 }
 void resize_pty(int pty) {
@@ -92,7 +92,7 @@ void do_proxy(int pty) {
       resize_pty(pty);
     }
     FD_ZERO(&set);
-    FD_SET(0, &set);
+    FD_SET(STDIN_FILENO, &set);
     FD_SET(pty, &set);
     sigemptyset(&select_mask);
     if (pselect(pty + 1, &set, NULL, NULL, NULL, &select_mask) < 0) {
@@ -101,8 +101,8 @@ void do_proxy(int pty) {
       fprintf(stderr, "select: %m");
       return;
     }
-    if (FD_ISSET(0, &set)) {
-      count = read(0, buf, sizeof buf);
+    if (FD_ISSET(STDIN_FILENO, &set)) {
+      count = read(STDIN_FILENO, buf, sizeof buf);
       if (count < 0)
         return;
       writeall(pty, buf, count);
@@ -204,7 +204,7 @@ int main(int argc, char * argv[]) {
   do_proxy(pty);
   do {
       errno = 0;
-      if (tcsetattr(0, TCSANOW, &saved_termios) && errno != EINTR)
+      if (tcsetattr(STDIN_FILENO, TCSANOW, &saved_termios) && errno != EINTR)
           err_sys("Unable to tcsetattr: %m");
   } while (errno == EINTR);
 
