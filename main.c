@@ -21,8 +21,10 @@ void print_version() {
 
 void setup_raw(struct termios *save) {
   struct termios set;
-  if (tcgetattr(0, save) < 0) {
-      fprintf(stderr, "Unable to read terminal attributes: %m");
+  if (tcgetattr(STDIN_FILENO, save) < 0) {
+      if (isatty(STDIN_FILENO != 1)) {
+        fprintf(stderr, "Unable to read terminal attributes: %m");
+      }
       return;
   }
   set = *save;
@@ -203,9 +205,11 @@ int main(int argc, char * argv[]) {
   setup_raw(&saved_termios);
   do_proxy(pty);
   do {
-      errno = 0;
-      if (tcsetattr(STDIN_FILENO, TCSANOW, &saved_termios) && errno != EINTR)
-          err_sys("Unable to tcsetattr: %m");
+      if (isatty(STDIN_FILENO)) {
+        errno = 0;
+        if (tcsetattr(STDIN_FILENO, TCSANOW, &saved_termios) && errno != EINTR)
+            err_sys("Unable to tcsetattr: %m");
+      }
   } while (errno == EINTR);
 
   if (returncode) {
