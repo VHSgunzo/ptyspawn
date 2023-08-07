@@ -1,7 +1,7 @@
 #ifndef	_PTYSPAWN_H
 #define	_PTYSPAWN_H
 
-#define PTYSPAWN_VERSION "v0.0.4"
+#define PTYSPAWN_VERSION "v0.0.5"
 #define PTYSPAWN_USAGE "Usage: ptyspawn [ -vhV ] command {command args}"
 
 #define _POSIX_C_SOURCE 200809L
