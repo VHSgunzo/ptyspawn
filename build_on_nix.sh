@@ -9,15 +9,15 @@
 
 
 ##-------------------------------------------------------#
-##Install ptyspawn & Deps
+##Install coreutils & Deps
 export DEBIAN_FRONTEND="noninteractive"
 echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 sudo apt update -y -qq
-sudo apt install 7zip b3sum bc binutils binutils-aarch64-linux-gnu ptyspawn curl dos2unix fdupes jq moreutils wget -y -qq
-sudo apt-get install apt-transport-https apt-utils b3sum bc binutils binutils-aarch64-linux-gnu ca-certificates ptyspawn dos2unix fdupes gnupg2 jq moreutils p7zip-full rename rsync software-properties-common texinfo tmux upx util-linux wget -y -qq 2>/dev/null ; sudo apt-get update -y 2>/dev/null
+sudo apt install 7zip b3sum bc binutils binutils-aarch64-linux-gnu coreutils curl dos2unix fdupes jq moreutils wget -y -qq
+sudo apt-get install apt-transport-https apt-utils b3sum bc binutils binutils-aarch64-linux-gnu ca-certificates coreutils dos2unix fdupes gnupg2 jq moreutils p7zip-full rename rsync software-properties-common texinfo tmux upx util-linux wget -y -qq 2>/dev/null ; sudo apt-get update -y 2>/dev/null
 #Do again, sometimes fails
-sudo apt install 7zip b3sum bc binutils binutils-aarch64-linux-gnu ptyspawn curl dos2unix fdupes jq moreutils wget -y -qq
-sudo apt-get install apt-transport-https apt-utils b3sum bc binutils binutils-aarch64-linux-gnu ca-certificates ptyspawn dos2unix fdupes gnupg2 jq moreutils p7zip-full rename rsync software-properties-common texinfo tmux upx util-linux wget -y -qq2>/dev/null ; sudo apt-get update -y 2>/dev/null
+sudo apt install 7zip b3sum bc binutils binutils-aarch64-linux-gnu coreutils curl dos2unix fdupes jq moreutils wget -y -qq
+sudo apt-get install apt-transport-https apt-utils b3sum bc binutils binutils-aarch64-linux-gnu ca-certificates coreutils dos2unix fdupes gnupg2 jq moreutils p7zip-full rename rsync software-properties-common texinfo tmux upx util-linux wget -y -qq2>/dev/null ; sudo apt-get update -y 2>/dev/null
 ##-------------------------------------------------------#
 
 ##-------------------------------------------------------#
@@ -96,7 +96,6 @@ pip install --break-system-packages --upgrade pip || pip install --upgrade pip
 sudo apt install lm-sensors pciutils procps python3-distro python3-netifaces sysfsutils virt-what -y -qq 2>/dev/null
 pip install build ansi2txt cffi pipx scons scuba py2static pytest typer --upgrade --force 2>/dev/null 
 pip install build ansi2txt cffi pipx scons scuba py2static pytest typer --break-system-packages --upgrade --force 2>/dev/null
-#https://github.com/VHSgunzo/ptyspawn-static/blob/main/build.sh
 #Musl
 pushd "$($TMPDIRS)" >/dev/null 2>&1 && git clone --filter "blob:none" "https://git.musl-libc.org/git/musl" && cd "./musl"
 unset AR CC CFLAGS CXX CPPFLAGS CXXFLAGS DLLTOOL HOST_CC HOST_CXX LDFLAGS OBJCOPY RANLIB
@@ -117,7 +116,7 @@ make --jobs="$(($(nproc)+1))" --keep-going
 find "." -maxdepth 1 -type f -exec file -i "{}" \; | grep "application/.*executable" | cut -d":" -f1 | xargs realpath | xargs -I {} rsync -av --copy-links {} "${ARTIFACTS}/"
 sudo chown -R "$(whoami):$(whoami)" "${ARTIFACTS}" && chmod -R 755 "${ARTIFACTS}"
 find "${ARTIFACTS}" -type f -name '*.sh' -delete 2>/dev/null
-find "${ARTIFACTS}" -type f -exec bash -c 'mv "$0" "${0}-$(uname -m)-$(uname -s)"' {} \; 2>/dev/null
+find "${ARTIFACTS}" -type f ! -name '*.txt' -exec bash -c 'mv "$0" "${0}-$(uname -m)-$(uname -s)"' {} \; 2>/dev/null
 #Strip
 find "${ARTIFACTS}" -type f -exec strip --strip-debug --strip-dwo --strip-unneeded -R ".comment" -R ".gnu.version" --preserve-dates "{}" \; 2>/dev/null
 #upx
