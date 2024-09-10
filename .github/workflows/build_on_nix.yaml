@@ -382,7 +382,7 @@ jobs:
           #Build
           pushd "$(mktemp -d)" >/dev/null 2>&1
           docker stop "arch-builder" 2>/dev/null ; docker rm "arch-builder" 2>/dev/null
-          docker run --privileged --net="host" --name "arch-builder" "azathothas/archlinux:latest" \
+          docker run --platform="linux/amd64" --privileged --net="host" --name "arch-builder" "azathothas/archlinux:latest" \
            bash -c '
            #Setup ENV
             pacman -Syu --noconfirm && pacman base-devel coreutils curl git jq less moreutils micro nano rsync sudo util-linux wget --sync --noconfirm
