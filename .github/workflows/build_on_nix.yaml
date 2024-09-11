@@ -364,6 +364,7 @@ jobs:
             mkdir -p "/build-bins" && cd "/build-bins"
             chown -R "runner:runner" "/build-bins"
             curl -qfsSL "https://raw.githubusercontent.com/Azathothas/ptyspawn/main/PKGBUILD" -o "./PKGBUILD"
+            sed "s/PKGEXT='\''[^'\'']*'\''/PKGEXT='\''.pkg.tar.zst'\''/g" -i "/etc/makepkg.conf"
             sudo -u "runner" makepkg --force --syncdeps --cleanbuild --clean --noconfirm
             sudo -u "runner" find . -type f \( ! -name "*.pkg.tar.zst" -o -name "*-debug-*.pkg.tar.zst" \) -delete
            '
@@ -397,6 +398,7 @@ jobs:
             mkdir -p "/build-bins" && cd "/build-bins"
             chown -R "runner:runner" "/build-bins"
             curl -qfsSL "https://raw.githubusercontent.com/Azathothas/ptyspawn/main/PKGBUILD" -o "./PKGBUILD"
+            sed "s/PKGEXT='\''[^'\'']*'\''/PKGEXT='\''.pkg.tar.zst'\''/g" -i "/etc/makepkg.conf"
             sudo -u "runner" makepkg --force --syncdeps --cleanbuild --clean --noconfirm
             sudo -u "runner" find . -type f \( ! -name "*.pkg.tar.zst" -o -name "*-debug-*.pkg.tar.zst" \) -delete
            '
