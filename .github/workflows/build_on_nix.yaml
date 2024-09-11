@@ -367,6 +367,7 @@ jobs:
            '
           #Copy
            pushd "$(mktemp -d)" >/dev/null 2>&1
+           docker cp "arch-builder:/build-bins/." "$(pwd)/"
            find "." -maxdepth 1 -type f -exec sh -c 'file "{}"; du -sh "{}"' \;
            sudo rsync -av --copy-links --exclude="*/" "./." "${SYSTMP}/PKGS"
            docker stop "arch-builder" 2>/dev/null ; docker rm "arch-builder"
@@ -399,6 +400,7 @@ jobs:
            '
           #Copy
            pushd "$(mktemp -d)" >/dev/null 2>&1
+           docker cp "arch-builder:/build-bins/." "$(pwd)/"
            find "." -maxdepth 1 -type f -exec sh -c 'file "{}"; du -sh "{}"' \;
            sudo rsync -av --copy-links --exclude="*/" "./." "${SYSTMP}/PKGS"
            docker stop "arch-builder" 2>/dev/null ; docker rm "arch-builder"
