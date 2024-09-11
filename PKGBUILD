@@ -7,7 +7,7 @@ arch=("aarch64" "x86_64")
 url="https://github.com/VHSgunzo/${pkgname}"
 provides=("${pkgname}")
 conflicts=("${pkgname}")
-source=("https://github.com/Azathothas/${pkgname}/releases/download/v${pkgver}/${pkgname}-${CARCH}-Linux")
+source=("https://github.com/VHSgunzo/${pkgname}/releases/download/v${pkgver}/${pkgname}-${CARCH}-Linux")
 sha256sums=('SKIP')
 
 package() {
