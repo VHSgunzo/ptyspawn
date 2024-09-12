@@ -430,7 +430,7 @@ jobs:
       - name: Releaser
         uses: softprops/action-gh-release@v2.0.8
         with:
-          name: "snapshot ${{ env.PKG_VERSION}}"
+          name: "Snapshot (${{ env.PKG_VERSION}}) ${{ env.UTC_TIME }} "
           tag_name: "${{ env.UTC_TIME }}"
           prerelease: false
           draft: false
