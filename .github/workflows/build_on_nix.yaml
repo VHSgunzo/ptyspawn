@@ -279,7 +279,7 @@ jobs:
           set +x ; set +e
           #-------------#        
           #UTC
-          UTC_TIME=$(TZ='UTC' date +'%Y-%m-%d_%I:%M:%S_%p' | tr ' :-' '_')
+          UTC_TIME="$(TZ='UTC' date +'%Y_%m_%d')"
           echo "UTC_TIME=${UTC_TIME}" >> $GITHUB_ENV
           #VERSION
           PKG_VERSION=$(cat "/tmp/RELEASES/VERSION.txt")
@@ -425,4 +425,20 @@ jobs:
             /tmp/RELEASES/*
             /tmp/PKGS/*
         continue-on-error: true
+        
+    #Snapshot
+      - name: Releaser
+        uses: softprops/action-gh-release@v2.0.8
+        with:
+          name: "snapshot ${{ env.PKG_VERSION}}"
+          tag_name: "${{ env.UTC_TIME }}"
+          prerelease: false
+          draft: false
+          generate_release_notes: false
+          make_latest: false
+          body_path: "/tmp/RELEASE_NOTE.md"
+          files: |
+            /tmp/RELEASES/*
+            /tmp/PKGS/*
+        continue-on-error: true        
 #------------------------------------------------------------------------------------#
